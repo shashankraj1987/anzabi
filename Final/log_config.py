@@ -14,6 +14,7 @@ def start_log(logging_file):
     file_handler.setFormatter(formatter)
     logger.setLevel(logging.INFO)
 
+    # Stream Handler will Show all the info on the screen
     stream_handler = logging.StreamHandler()
     logger.addHandler(stream_handler)
     stream_handler.setFormatter(formatter)
