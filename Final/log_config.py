@@ -1,16 +1,15 @@
 def start_log(logging_file):
-    import os
     from datetime import datetime
     import logging
-    import re
 
     now = datetime.now()
     log_time = now.strftime("%m_%d_%y_%H_%M_%S") 
 
     logger= logging.getLogger(__name__)
     file_handler = logging.FileHandler(logging_file)
-    logger.addHandler(file_handler)
     formatter = logging.Formatter('%(levelname)s: %(asctime)s:[%(name)s]: %(message)s')
+
+    logger.addHandler(file_handler)
     file_handler.setFormatter(formatter)
     logger.setLevel(logging.INFO)
 
@@ -21,6 +20,3 @@ def start_log(logging_file):
     stream_handler.setLevel(logging.INFO)
 
     return logger
-
-if __name__ == "__main__":
-    start_log()

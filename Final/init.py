@@ -1,45 +1,48 @@
-from ast import Raise
-from mimetypes import init
-from os import uname
-from platform import node
 from tabnanny import check
 
 
 def main():
-    import os
-    from datetime import datetime
-    import logging
-    import re 
 
-    import log_config
+    # Importing sytem Libraries
+    import sys
+
+    # Import User Libraries 
+    from init_checks import pre_main
+    from  log_config import start_log
     import check_server
 
-    now = datetime.now()
-    log_time = now.strftime("%m_%d_%y_%H_%M_%S")
+    #
+    srv_params = check_server.get_hostname()  
+    host_name = srv_params[0]
+    log_time = srv_params[1]
 
-    u_name = str(os.uname())
-    h_name = re.compile(r'\'.*?\'')  ## This is Anything Between Parentheses
-    matches = h_name.findall(u_name)
-    host = matches[1].split("\'")[1]
-
-    srv_info = check_server.chk_details(host,log_time)
-    log_loc = srv_info[0]
-    data_loc = srv_info[1]
-    log_file = srv_info[2]
-    srv_type = srv_info[3]
-
-    init_logger = log_config.start_log(log_file)
-
-    if os.path.exists(data_loc):
+    srv_details = check_server.chk_details(host_name,log_time)
+    logfile = srv_details[2]
+    srvr_type = srv_details[3]
+    dataloc = srv_details[1]
+    
+    # 
+    try:
+        init_logger = start_log(logfile)
+        init_check_status = pre_main()
+    except FileNotFoundError:
+        print(f' The Log Location could not be found.\n Is OneDrive Mounted?')
+        print(f'The Curerent Server is [{srvr_type}]')
+        sys.exit()
+    else:
+        init_logger.info("All OK")
+    
+    # 
+    if init_check_status:
         init_logger.info(f'Found Data Location.')
-        init_logger.info(f'On [{srv_type}]')
-        init_logger.info(f'[Log Location is]: {log_loc}')
-        init_logger.info(f'[Data Location is]: {data_loc} ')
-    else: 
-        init_logger.error(f'\n[OneDrive] is Not Mounted on {srv_type}.\n Exiting.')
-        ## System Exit. 
+        init_logger.info(f'On [{srvr_type}]')
+        init_logger.info(f'[Log Location is]: {logfile}')
+        init_logger.info(f'[Data Location is]: {dataloc} ')
+        init_logger.info(f' Init Checks Done. Moving Forward')
+    else:
+        init_logger.critical(f' Init Check Failed. Exiting.')
+        sys.exit()
 
-    # Defining the Logging Parameters 
 
 if __name__ == '__main__':
     main()

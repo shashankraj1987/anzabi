@@ -14,5 +14,18 @@ def chk_details(hostname,time):
 
         return log_loc,data_loc,log_file,srv_type
 
-if __name__=="__main__":
-    chk_details()
+def get_hostname():
+    
+    from datetime import datetime
+    import os
+    import re
+
+    now = datetime.now()
+    log_time = now.strftime("%m_%d_%y_%H_%M_%S")
+
+    u_name = str(os.uname())
+    h_name = re.compile(r'\'.*?\'')  ## This is Anything Between Parentheses
+    matches = h_name.findall(u_name)
+    host = matches[1].split("\'")[1]
+
+    return host, log_time
