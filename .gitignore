@@ -1,2 +1,6 @@
 
+<<<<<<< Updated upstream
 *.json
+=======
+.vscode/settings.json
+>>>>>>> Stashed changes
