@@ -1,6 +1,6 @@
 from tabnanny import check
 
-def main():
+def pre_checks():
 
     # Importing sytem Libraries
     import sys
@@ -42,6 +42,40 @@ def main():
         init_logger.critical(f' Init Check Failed. Exiting.')
         sys.exit()
 
+def cleanup_monthly_file_ranges():
+
+    #TODO: Add the monthly file cleanup logic here 
+    print("Here All the files dealing with monthly data will be cleaned up")
+
+def merge_files():
+    #TODO: Script to merge all the files 
+    print("Here all the related files will be merged")
+
+def concat_files():
+    #TODO: Script to Concatenate all relevant files 
+    print("Here all the related files will be concatenated")
+    
+def load_to_db():
+    #TODO: Script to load the final files to the Database. 
+    print("Here the final file will be loaded to the Database. ")
+    print("Probably by using linux shell script")
+
+def main():
+
+    # Step 1 
+    pre_checks()
+
+    # Step 2
+    cleanup_monthly_file_ranges()
+
+    # Step 3 
+    concat_files()
+
+    # Step 4 
+    merge_files()
+
+    # Step 5
+    load_to_db()
 
 if __name__ == '__main__':
     main()
