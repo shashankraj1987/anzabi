@@ -42,6 +42,8 @@ def pre_checks():
         init_logger.critical(f' Init Check Failed. Exiting.')
         sys.exit()
 
+
+
 def cleanup_monthly_file_ranges():
 
     #TODO: Add the monthly file cleanup logic here 
