@@ -1,4 +1,5 @@
-from tabnanny import check
+from  log_config import start_log
+from datetime import datetime
 
 def pre_checks():
 
@@ -7,7 +8,6 @@ def pre_checks():
 
     # Import User Libraries 
     from init_checks import pre_main
-    from  log_config import start_log
     import check_server
 
     #
@@ -43,42 +43,29 @@ def pre_checks():
         sys.exit()
 
 
-
-def cleanup_monthly_file_ranges():
-
-    #TODO: Add the monthly file cleanup logic here 
-    print("Here All the files dealing with monthly data will be cleaned up")
-
-def merge_files():
-    #TODO: Script to merge all the files 
-    print("Here all the related files will be merged")
-
-def concat_files():
-    #TODO: Script to Concatenate all relevant files 
-    print("Here all the related files will be concatenated")
-    
 def load_to_db():
     #TODO: Script to load the final files to the Database. 
     print("Here the final file will be loaded to the Database. ")
     print("Probably by using linux shell script")
 
 def main():
+    import organize_files as of
+
+    file_loc = r"C:\\Users\\shash\\OneDrive - Anza Services LLP\\DATA_Dump"
+    log_file = r"C:\\Users\\shash\\OneDrive - Anza Services LLP\\Logs"
+    
+    # now = datetime.now()
+    # log_time = now.strftime("%m_%d_%y_%H_%M_%S")
+    # log_file = file_loc+"/"+log_time+".log"
 
     # Step 1 
-    pre_checks()
+    #pre_checks()
 
     # Step 2
-    cleanup_monthly_file_ranges()
+    dict_list, total_processed = of.categorize_files(file_loc)
+    of.concat_files(dict_list,file_loc, log_file)
 
-    # Step 3 
-    concat_files()
-
-    # Step 4 
-    merge_files()
-
-    # Step 5
-    load_to_db()
+    print(f'\nLog Files are located at {log_file}')
 
 if __name__ == '__main__':
     main()
-        
