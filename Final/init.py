@@ -53,9 +53,9 @@ def main():
     import pandas as pd
     import os
 
-    file_loc = r"D:\\One Drive Anza\\OneDrive - Anza Services LLP\\DATA_Dump"
-    log_file = r"D:\\One Drive Anza\\OneDrive - Anza Services LLP\\DATA_Dump\\Logs"
-    final_files = r"D:\\One Drive Anza\\OneDrive - Anza Services LLP\\DATA_Dump\\Processed"
+    file_loc = r"D:\Learning+Offline\DATA_Dump"
+    log_file = file_loc+"\\"+"Logs"
+    final_files = file_loc+"\\"+"Final_Df"
     # now = datetime.now()
     # log_time = now.strftime("%m_%d_%y_%H_%M_%S")
     # log_file = file_loc+"/"+log_time+".log"
@@ -64,7 +64,7 @@ def main():
     # pre_checks()
 
     # Step 2
-    dict_list, total_processed = of.categorize_files(file_loc)
+    dict_list = of.categorize_files(file_loc)
     all_files = of.concat_files(dict_list, file_loc, log_file)
 
     print(f'\nLog Files are located at {log_file}')

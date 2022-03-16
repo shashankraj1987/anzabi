@@ -40,10 +40,44 @@ create table fee_smry_dept_fe(
 	Date_Added date not null
 )
 
-create table fee_billed(
-	srNo SERIAL primary key,
+create table fees_billed(
+	srno SERIAL primary key,
 	feeref varchar(10) not null, 
-	fe_month date not null,
-	splitamount float8 not null,
+	tnx_month varchar not null,
+	split_amount float8,
 	Date_Added date not null
 )
+
+create table mttr_src_ref(
+	srno SERIAL primary key,
+	Fee_Earner_Reference1 varchar(10) not null, 
+	Business_Source1 varchar not null,
+	Client_Name1 varchar not null, 
+	Matter_Ref varchar not null, 
+	Matter_Description varchar,
+	Bill_Date date not null,
+	Bill_Ref varchar(10) not null, 
+	Bill_Amount int,
+	Date_Added date not null
+)
+
+create table tot_hrs_by_fe(
+	srno SERIAL primary key,
+	EarnerRef varchar(10) not null, 
+	EarnerName varchar not null, 
+	RecordedHours varchar not null,
+	RecordedHours1 float8, 
+	RecordedValue int, 
+	NonChargeHours varchar not null,
+	NonChargeHours1 float8,
+	NonChargeValue int,
+	WOHours varchar not null,
+	WOHours1 float8,
+	WOValue float8,
+	TotalHour varchar not null,
+	TotalHour1 float8,
+	TotalValue int, 
+	NetBillings float8,
+	Date_Added date not null
+)
+
