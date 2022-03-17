@@ -21,7 +21,7 @@ def remove_cols(df):
     cols = df.columns
     new_cols = []
     txt_chk = re.compile(r'Textbox')
-    tot_hrs_col_name = ["RecordedHours2","NonChargeHours2","WOHours2","TotalHour2"]
+    tot_hrs_col_name = ["RecordedHours2","NonChargeHours2","WOHours2","TotalHour2","bankRef"]
     new_cols = [col_name for col_name in cols if not(txt_chk.search(col_name)) and col_name not in tot_hrs_col_name]
     return new_cols
 
@@ -126,7 +126,7 @@ def concat_files(dict_list, file_loc, logfile_loc):
                 try:
                     df_final[cols].astype(float)
                 except:
-                    pass
+                    continue
                     # concat_logger.info(f'Skipping Column {cols}')
                 else:
                     # concat_logger.info(f'Converting {cols} to float')

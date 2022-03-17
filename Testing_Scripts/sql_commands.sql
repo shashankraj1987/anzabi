@@ -8,7 +8,7 @@ CREATE SCHEMA "Raw_Data" AUTHORIZATION sraj;
 GRANT ALL ON SCHEMA "Raw_Data" TO sraj;
 
 -- Commands to Create Tables: 
-create table client_billing(
+create table "Raw_Data".client_billing(
 	srNo SERIAL primary key,
 	Client_Surname1 varchar not null,
 	Total_Profit1 float, 
@@ -18,7 +18,7 @@ create table client_billing(
 	Date_Added date not null
 )
 
-create table fee_brkdn_dept_fe(
+create table "Raw_Data".fee_brkdn_dept_fe(
 	srNo SERIAL primary key,
 	Matter_Dept_Dept_Name varchar not null,
 	Fee_Earner_Reference varchar(10) not null, 
@@ -32,7 +32,7 @@ create table fee_brkdn_dept_fe(
 	Date_Added date not null
 )
 
-create table fee_smry_dept_fe(
+create table "Raw_Data".fee_smry_dept_fe(
 	srNo SERIAL primary key,
 	Matter_Dept_Dept_Name varchar not null,
 	Fee_Earner_Reference1 varchar(10) not null, 
@@ -40,7 +40,7 @@ create table fee_smry_dept_fe(
 	Date_Added date not null
 )
 
-create table fees_billed(
+create table "Raw_Data".fees_billed(
 	srno SERIAL primary key,
 	feeref varchar(10) not null, 
 	tnx_month varchar not null,
@@ -48,7 +48,7 @@ create table fees_billed(
 	Date_Added date not null
 )
 
-create table mttr_src_ref(
+create table "Raw_Data".mttr_src_ref(
 	srno SERIAL primary key,
 	Fee_Earner_Reference1 varchar(10) not null, 
 	Business_Source1 varchar not null,
@@ -61,7 +61,7 @@ create table mttr_src_ref(
 	Date_Added date not null
 )
 
-create table tot_hrs_by_fe(
+create table "Raw_Data".tot_hrs_by_fe(
 	srno SERIAL primary key,
 	EarnerRef varchar(10) not null, 
 	EarnerName varchar not null, 
@@ -81,3 +81,31 @@ create table tot_hrs_by_fe(
 	Date_Added date not null
 )
 
+create table "Raw_Data".mtrs_by_fe(
+	srno SERIAL primary key, 
+	fee_earner_full_name1 varchar not null, 
+	business_source VARCHAR not null,
+	work_type_description1 varchar not null, 
+	matter_ref varchar(10),
+	Date_Added date not null
+)
+
+create table "Raw_Data".pmt_rcv_analysis(
+	srno SERIAL primary key, 
+	feeearnercode1 varchar(10) not null,
+	mattercode1 varchar(20) not null, 
+	client_name VARCHAR(200) not null,
+	matbranchref VARCHAR(10),
+	bankref varchar, 
+	postingdetailsdate DATE not null, 
+	paymentref varchar(10) not null,
+	departmentcode varchar(20) not null, 
+	feesreceived float8 not null, 
+	feesnet float8 not null, 
+	disballoc float8 not null, 
+	unalloc int not null, 
+	payalloc int not null, 
+	feesnet1 float8 not null, 
+	feesnet2 float8 not null, 
+	Date_Added date not null 
+)
