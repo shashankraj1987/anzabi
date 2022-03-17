@@ -91,6 +91,7 @@ def main():
     ## Remove the Trigger file
     if os.path.exists(trigger_file):
          os.remove(trigger_file)
+         print("Trigger File Removed")
 
 if __name__ == '__main__':
     main()
