@@ -107,7 +107,7 @@ def concat_files(dict_list, file_loc, logfile_loc):
     tot_processed = 0
      # If a Filename is not in this Dictionary, then it will not be Considered. 
     # date = (datetime.now()).strftime("%m-%d-%y")
-    
+    concat_logger.info(f'Following Keys will be processed - [{dict_list.keys()}]')
     for file_cat in dict_list.keys():
         df_final = pd.DataFrame()
         concat_logger.info('*' * 50)
