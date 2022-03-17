@@ -60,6 +60,7 @@ def main():
     final_files = file_loc+"\\"+"Final_Df"
     backup = file_loc+"\\"+"Backup"
     today = datetime.today().date()
+    trigger_file = file_loc+"\\file_trigger\\"+"new_data_received.txt"
 
     db = 'AnzaBI'
     db_user = 'sraj'
@@ -88,8 +89,9 @@ def main():
         print(f'Processed File [{file}]')
         pd.DataFrame.to_parquet()
 
-
-
+    ## Remove the Trigger file
+    if os.path.exists(trigger_file):
+         os.remove(trigger_file)
 
 if __name__ == '__main__':
     main()
