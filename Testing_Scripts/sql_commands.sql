@@ -1,14 +1,14 @@
 -- Delete Schema :
-DROP SCHEMA "Raw_Data";
+DROP SCHEMA "Bowling_Data";
 
 -- Create a Schema :
-CREATE SCHEMA "Raw_Data" AUTHORIZATION sraj;
+CREATE SCHEMA "Bowling_Data" AUTHORIZATION db_Admin;
 
 -- Permissions on Schema: 
-GRANT ALL ON SCHEMA "Raw_Data" TO sraj;
+GRANT ALL ON SCHEMA "Bowling_Data" TO db_Admin;
 
 -- Commands to Create Tables: 
-create table "Raw_Data".client_billing(
+create table "Bowling_Data".client_billing(
 	srNo SERIAL primary key,
 	Client_Surname1 varchar not null,
 	Total_Profit1 float, 
@@ -18,7 +18,7 @@ create table "Raw_Data".client_billing(
 	Date_Added date not null
 )
 
-create table "Raw_Data".fee_brkdn_dept_fe(
+create table "Bowling_Data".fee_brkdn_dept_fe(
 	srNo SERIAL primary key,
 	Matter_Dept_Dept_Name varchar not null,
 	Fee_Earner_Reference varchar(10) not null, 
@@ -32,7 +32,7 @@ create table "Raw_Data".fee_brkdn_dept_fe(
 	Date_Added date not null
 )
 
-create table "Raw_Data".fee_smry_dept_fe(
+create table "Bowling_Data".fee_smry_dept_fe(
 	srNo SERIAL primary key,
 	Matter_Dept_Dept_Name varchar not null,
 	Fee_Earner_Reference1 varchar(10) not null, 
@@ -40,7 +40,7 @@ create table "Raw_Data".fee_smry_dept_fe(
 	Date_Added date not null
 )
 
-create table "Raw_Data".fees_billed(
+create table "Bowling_Data".fees_billed(
 	srno SERIAL primary key,
 	feeref varchar(10) not null, 
 	tnx_month varchar not null,
@@ -48,7 +48,7 @@ create table "Raw_Data".fees_billed(
 	Date_Added date not null
 )
 
-create table "Raw_Data".mttr_src_ref(
+create table "Bowling_Data".mttr_src_ref(
 	srno SERIAL primary key,
 	Fee_Earner_Reference1 varchar(10) not null, 
 	Business_Source1 varchar not null,
@@ -61,7 +61,7 @@ create table "Raw_Data".mttr_src_ref(
 	Date_Added date not null
 )
 
-create table "Raw_Data".tot_hrs_by_fe(
+create table "Bowling_Data".tot_hrs_by_fe(
 	srno SERIAL primary key,
 	EarnerRef varchar(10) not null, 
 	EarnerName varchar not null, 
@@ -81,7 +81,7 @@ create table "Raw_Data".tot_hrs_by_fe(
 	Date_Added date not null
 )
 
-create table "Raw_Data".mtrs_by_fe(
+create table "Bowling_Data".mtrs_by_fe(
 	srno SERIAL primary key, 
 	fee_earner_full_name1 varchar not null, 
 	business_source VARCHAR not null,
@@ -90,7 +90,7 @@ create table "Raw_Data".mtrs_by_fe(
 	Date_Added date not null
 )
 
-create table "Raw_Data".pmt_rcv_analysis(
+create table "Bowling_Data".pmt_rcv_analysis(
 	srno SERIAL primary key, 
 	feeearnercode1 varchar(10) not null,
 	mattercode1 varchar(20) not null, 

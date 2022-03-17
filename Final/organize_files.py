@@ -52,10 +52,10 @@ def get_date_from_Filename(fname):
 
 
 def categorize_files(file_loc):
-    log_loc = file_loc + "\\" + "Logs"
+    log_loc = file_loc + "/" + "Logs"
     cat_file_logger = lc.start_log(log_loc)
-    unprocessed = file_loc + "\\Unprocessed"
-    processed = file_loc + "\\" + "Processed"
+    unprocessed = file_loc + "/Unprocessed"
+    processed = file_loc + "/Processed"
 
     if os.name == 'posix':
         os.system('clear')
@@ -78,7 +78,7 @@ def categorize_files(file_loc):
 
     # Move the above files to Unprocessed Folder before moving ahead
     for f in discard_files.keys():
-        [shutil.move(file_loc + "\\" + file, unprocessed)  for file in discard_files[f]]
+        [shutil.move(file_loc + "/" + file, unprocessed)  for file in discard_files[f]]
 
     process_files['client_billing'] = [files for files in file_list if len(re.compile(r'Client [a-zA-Z\s]+_\d+.csv').findall(files))]
     process_files['fee_brkdn_dept_fe'] = [files for files in file_list if len(re.compile(r'Fee Breakdown [a-zA-Z\s]+_\d+.csv').findall(files))]
@@ -91,7 +91,7 @@ def categorize_files(file_loc):
 
     for f in process_files.keys():
         print(f'Moving category [{f}]')
-        [shutil.move(file_loc + "\\" + file, processed)  for file in process_files[f]]
+        [shutil.move(file_loc + "/" + file, processed)  for file in process_files[f]]
     
 
     return process_files
@@ -114,7 +114,7 @@ def concat_files(dict_list, file_loc, logfile_loc):
         concat_logger.info(f'Processing Category {file_cat}')
         for file in dict_list[file_cat]:
             dict_fname = file.split("_")[0]
-            dfc_file = pd.read_csv((file_loc + "\\Processed\\" + file), skiprows=get_rows(skip_rows, file))
+            dfc_file = pd.read_csv((file_loc + "/Processed/" + file), skiprows=get_rows(skip_rows, file))
             dfc_file = dfc_file[remove_cols(dfc_file)]
             processing_date = get_date_from_Filename(file)
             dfc_file["Date_Added"] = processing_date

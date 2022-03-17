@@ -55,20 +55,19 @@ def main():
     from sqlalchemy import create_engine
     from datetime import datetime
 
-    file_loc = r"C:\Users\shash\Offline_Docs\Anza\DATA_Dump"
-    log_file = file_loc+"\\"+"Logs"
-    final_files = file_loc+"\\"+"Final_Df"
-    backup = file_loc+"\\"+"Backup"
+    #file_loc = r"C:\Users\shash\Offline_Docs\Anza\DATA_Dump"
+    file_loc = "/home/srv_admin/One_Drive/DATA_Dump"
+    log_file = file_loc+"/"+"Logs"
+    final_files = file_loc+"/"+"Final_Df"
+    backup = file_loc+"/"+"Backup"
     today = datetime.today().date()
-    trigger_file = file_loc+"\\file_trigger\\"+"new_data_received.txt"
+    trigger_file = file_loc+"/file_trigger/"+"new_data_received.txt"
 
     db = 'AnzaBI'
-    db_user = 'sraj'
+    db_user = 'db_admin'
     db_password = 'password'
-    db_host = 'localhost'
+    db_host = '219.91.145.98'
     db_port = '5432'
-    db_schema = '"Raw_Data"'
-
     engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db}',echo=True,future=True)
 
     schema_ref = {
@@ -83,8 +82,8 @@ def main():
 
     for file in all_files.keys():
         all_files[file].columns = [cols.lower() for cols in all_files[file].columns]                                                            # Convert the Columns to lower case for easy updation in Database
-        all_files[file].to_csv(final_files+"\\"+file+"_"+today+".csv",index=False)                                                         # Create Final Dataframe in csv
-        all_files[file].to_parquet(backup+"\\"+file+"_"+today+".parquet.gzip",compression = 'gzip',index=False)   # Create a Backup Paraquet FIle as well. 
+        all_files[file].to_csv(final_files+"/"+file+"_"+today+".csv",index=False)                                                         # Create Final Dataframe in csv
+        all_files[file].to_parquet(backup+"/"+file+"_"+today+".parquet.gzip",compression = 'gzip',index=False)   # Create a Backup Paraquet FIle as well. 
         all_files[file].to_sql(schema_ref[file],con=engine,if_exists='append',schema='Raw_Data',index=None)         # Send the data to database
         print(f'Processed File [{file}]')
         pd.DataFrame.to_parquet()
