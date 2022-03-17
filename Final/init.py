@@ -66,7 +66,7 @@ def main():
     db = 'AnzaBI'
     db_user = 'db_admin'
     db_password = 'password'
-    db_host = '219.91.145.98'
+    db_host = 'localhost'
     db_port = '5432'
     engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db}',echo=True)
 
@@ -81,9 +81,13 @@ def main():
     print(f'\nLog Files are located at {log_file}')
 
     for file in all_files.keys():
-        all_files[file].columns = [cols.lower() for cols in all_files[file].columns]                                                            # Convert the Columns to lower case for easy updation in Database
+        print(f"Converting all Columns to Lowercase for {file}")
+        all_files[file].columns = [cols.lower() for cols in all_files[file].columns]
+        print(f"Writing the Dataframe to CSV for  [{file}]")                                                                    # Convert the Columns to lower case for easy updation in Database
         all_files[file].to_csv(final_files+"/"+file+"_"+today+".csv",index=False)                                                         # Create Final Dataframe in csv
+        print(f"Creating Backup in Paraquet Format for  [{file}]")
         all_files[file].to_parquet(backup+"/"+file+"_"+today+".parquet.gzip",compression = 'gzip',index=False)   # Create a Backup Paraquet FIle as well. 
+        print(f"Putting all data in Postgresql Server for  [{file}]")
         all_files[file].to_sql(schema_ref[file],con=engine,if_exists='append',schema='Raw_Data',index=None)         # Send the data to database
         print(f'Processed File [{file}]')
         pd.DataFrame.to_parquet()
