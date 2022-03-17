@@ -55,8 +55,8 @@ def main():
     from sqlalchemy import create_engine
     from datetime import datetime
 
-    #file_loc = r"C:\Users\shash\Offline_Docs\Anza\DATA_Dump"
-    file_loc = "/home/srv_admin/One_Drive/DATA_Dump"
+    file_loc = r"C:\Users\shash\Offline_Docs\Anza\DATA_Dump"
+    #file_loc = "/home/srv_admin/One_Drive/DATA_Dump"
     log_file = file_loc+"/"+"Logs"
     final_files = file_loc+"/"+"Final_Df"
     backup = file_loc+"/"+"Backup"
@@ -68,7 +68,12 @@ def main():
     db_password = 'password'
     db_host = '219.91.145.98'
     db_port = '5432'
-    engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db}',echo=True)
+    try:
+        engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db}',echo=True)
+    except:
+        print("Unable to connect to the Database")
+    else:
+        print("Database Connection Established")
 
     schema_ref = {
     "Client Billing Descending":"client_billing","Fee Breakdown by Dept and Fee Earner":"fee_brkdn_dept_fe","Fee Summary by Dept and Fee Earner":"fee_smry_dept_fe",
@@ -85,13 +90,13 @@ def main():
         all_files[file].to_csv(final_files+"/"+file+"_"+today+".csv",index=False)                                                         # Create Final Dataframe in csv
         print(f"Creating Backup in Paraquet Format for  [{file}]")
         all_files[file].to_parquet(backup+"/"+file+"_"+today+".parquet.gzip",compression = 'gzip')   # Create a Backup Paraquet FIle as well. 
-        try: 
-            print(f"Putting all data in Postgresql Server for  [{file}]")
-            all_files[file].to_sql(schema_ref[file],con=engine,if_exists='append',schema='Raw_Data',index=None)   # Send the data to database
-        except:
-            print(f"***** Unable to write to Database for file [{file}]********* ")
-        else:
-            continue
+        # try: 
+        #     print(f"Putting all data in Postgresql Server for  [{file}]")
+        #     all_files[file].to_sql(schema_ref[file],con=engine,if_exists='append',schema='Raw_Data',index=None)   # Send the data to database
+        # except:
+        #     print(f"***** Unable to write to Database for file [{file}]********* ")
+        # else:
+        #     continue
         print(f'Processed File [{file}]')
 
     ## Remove the Trigger file
