@@ -104,7 +104,7 @@ def categorize_files(file_loc):
 def concat_files(dict_list, file_loc, logfile_loc):
     concat_logger = lc.start_log(logfile_loc)
     df_all_files = {}
-    tot_processed = 0
+    dict_fname= ""
      # If a Filename is not in this Dictionary, then it will not be Considered. 
     # date = (datetime.now()).strftime("%m-%d-%y")
     concat_logger.info(f'Following Keys will be processed - [{dict_list.keys()}]')
@@ -113,7 +113,10 @@ def concat_files(dict_list, file_loc, logfile_loc):
         concat_logger.info('*' * 50)
         concat_logger.info(f'Processing Category {file_cat}')
         for file in dict_list[file_cat]:
+            print("*"*50)
+            print("Went Inside For Loop ")
             dict_fname = file.split("_")[0]
+            print("Dict_fname assigned")
             dfc_file = pd.read_csv((file_loc + "/Processed/" + file), skiprows=get_rows(skip_rows, file))
             dfc_file = dfc_file[remove_cols(dfc_file)]
             processing_date = get_date_from_Filename(file)

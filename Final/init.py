@@ -66,7 +66,7 @@ def main():
     db = 'AnzaBI'
     db_user = 'db_admin'
     db_password = 'password'
-    db_host = 'localhost'
+    db_host = '219.91.145.98'
     db_port = '5432'
     engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db}',echo=True)
 
@@ -78,29 +78,28 @@ def main():
     dict_list = of.categorize_files(file_loc)
     all_files = of.concat_files(dict_list, file_loc, log_file)
 
-    print(f'\nLog Files are located at {log_file}')
-
     for file in all_files.keys():
         print(f"Converting all Columns to Lowercase for {file}")
         all_files[file].columns = [cols.lower() for cols in all_files[file].columns]
-        print(f"Writing the Dataframe to CSV for  [{file}]")                                                                    # Convert the Columns to lower case for easy updation in Database
+        print(f"Writing the Dataframe to CSV for  [{file}]")                                                                                         # Convert the Columns to lower case for easy updation in Database
         all_files[file].to_csv(final_files+"/"+file+"_"+today+".csv",index=False)                                                         # Create Final Dataframe in csv
         print(f"Creating Backup in Paraquet Format for  [{file}]")
-        all_files[file].to_parquet(backup+"/"+file+"_"+today+".parquet.gzip",compression = 'gzip',index=False)   # Create a Backup Paraquet FIle as well. 
+        all_files[file].to_parquet(backup+"/"+file+"_"+today+".parquet.gzip",compression = 'gzip')   # Create a Backup Paraquet FIle as well. 
         try: 
             print(f"Putting all data in Postgresql Server for  [{file}]")
-            all_files[file].to_sql(schema_ref[file],con=engine,if_exists='append',schema='Raw_Data',index=None)         # Send the data to database
+            all_files[file].to_sql(schema_ref[file],con=engine,if_exists='append',schema='Raw_Data',index=None)   # Send the data to database
         except:
-            print(f"Unable to write to Database for file {file}")
+            print(f"***** Unable to write to Database for file [{file}]********* ")
         else:
             continue
         print(f'Processed File [{file}]')
-        pd.DataFrame.to_parquet()
 
     ## Remove the Trigger file
     if os.path.exists(trigger_file):
          os.remove(trigger_file)
          print("Trigger File Removed")
+
+    print(f'\nLog Files are located at {log_file}')
 
 if __name__ == '__main__':
     main()
