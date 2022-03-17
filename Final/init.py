@@ -60,7 +60,7 @@ def main():
     log_file = file_loc+"/"+"Logs"
     final_files = file_loc+"/"+"Final_Df"
     backup = file_loc+"/"+"Backup"
-    today = datetime.today().date()
+    today = str(datetime.today().date())
     trigger_file = file_loc+"/file_trigger/"+"new_data_received.txt"
 
     db = 'AnzaBI'
