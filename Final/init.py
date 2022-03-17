@@ -68,7 +68,7 @@ def main():
     db_password = 'password'
     db_host = '219.91.145.98'
     db_port = '5432'
-    engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db}',echo=True,future=True)
+    engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db}',echo=True)
 
     schema_ref = {
     "Client Billing Descending":"client_billing","Fee Breakdown by Dept and Fee Earner":"fee_brkdn_dept_fe","Fee Summary by Dept and Fee Earner":"fee_smry_dept_fe",
