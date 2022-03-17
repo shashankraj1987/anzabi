@@ -87,8 +87,13 @@ def main():
         all_files[file].to_csv(final_files+"/"+file+"_"+today+".csv",index=False)                                                         # Create Final Dataframe in csv
         print(f"Creating Backup in Paraquet Format for  [{file}]")
         all_files[file].to_parquet(backup+"/"+file+"_"+today+".parquet.gzip",compression = 'gzip',index=False)   # Create a Backup Paraquet FIle as well. 
-        print(f"Putting all data in Postgresql Server for  [{file}]")
-        all_files[file].to_sql(schema_ref[file],con=engine,if_exists='append',schema='Raw_Data',index=None)         # Send the data to database
+        try: 
+            print(f"Putting all data in Postgresql Server for  [{file}]")
+            all_files[file].to_sql(schema_ref[file],con=engine,if_exists='append',schema='Raw_Data',index=None)         # Send the data to database
+        except:
+            print(f"Unable to write to Database for file {file}")
+        else:
+            continue
         print(f'Processed File [{file}]')
         pd.DataFrame.to_parquet()
 
