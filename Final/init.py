@@ -1,3 +1,4 @@
+from turtle import mode
 from log_config import start_log
 from datetime import datetime
 
@@ -87,7 +88,7 @@ def main():
         print(f"Converting all Columns to Lowercase for {file}")
         all_files[file].columns = [cols.lower() for cols in all_files[file].columns]
         print(f"Writing the Dataframe to CSV for  [{file}]")                                                                                         # Convert the Columns to lower case for easy updation in Database
-        all_files[file].to_csv(final_files+"/"+file+"_"+today+".csv",index=False)                                                         # Create Final Dataframe in csv
+        all_files[file].to_csv(final_files+"/"+file+".csv",index=False,mode="a")                                                         # Create Final Dataframe in csv
         print(f"Creating Backup in Paraquet Format for  [{file}]")
         all_files[file].to_parquet(backup+"/"+file+"_"+today+".parquet.gzip",compression = 'gzip')   # Create a Backup Paraquet FIle as well. 
         # try: 
