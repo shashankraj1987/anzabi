@@ -51,12 +51,17 @@ def load_to_db():
 def main():
     import organize_files as of
     import pandas as pd
+    import sys
     import os
     from sqlalchemy import create_engine
     from datetime import datetime
 
-    #file_loc = r"D:\Learning+Offline\DATA_Dump"
-    file_loc = "/home/srv_admin/One_Drive/DATA_Dump"
+      
+    if os.name == 'posix':
+            file_loc = "/home/srv_admin/One_Drive/DATA_Dump"
+    else:
+        file_loc = r"D:\Learning+Offline\DATA_Dump"
+    
     log_file = file_loc+"/"+"Logs"
     final_files = file_loc+"/"+"Final_Df"
     backup = file_loc+"/"+"Backup"
