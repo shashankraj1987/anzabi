@@ -60,7 +60,7 @@ def main():
     if os.name == 'posix':
             file_loc = "/home/srv_admin/One_Drive/DATA_Dump"
     else:
-        file_loc = r"D:\Learning+Offline\DATA_Dump"
+        file_loc = r"D:\One Drive Anza\OneDrive - Anza Services LLP\DATA_Dump"
     
     log_file = file_loc+"/"+"Logs"
     final_files = file_loc+"/"+"Final_Df"
