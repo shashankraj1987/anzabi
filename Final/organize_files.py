@@ -61,12 +61,12 @@ def categorize_files(file_loc):
         os.system('cls')
 
     log_loc = file_loc + "/" + "Logs"
-    cat_file_logger = lc.start_log(log_loc)
     unprocessed = file_loc + "/Unprocessed"
     processed = file_loc + "/Processed"
-
     ess_fold_list = [log_loc,unprocessed,processed]
 
+    cat_file_logger = lc.start_log(log_loc)
+    
     for fold in ess_fold_list:
         if os.path.exists(fold):
             cat_file_logger.info(f'\n[{fold}] already Exists in [{file_loc}]\n')

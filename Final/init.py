@@ -1,4 +1,3 @@
-from turtle import mode
 from log_config import start_log
 from datetime import datetime
 
