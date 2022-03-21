@@ -94,8 +94,13 @@ def categorize_files(file_loc):
     # Move the above files to Unprocessed Folder before moving ahead
     for f in discard_files.keys():
                 cat_file_logger.info(f'Moving out files of list [{f}] to folder [{unprocessed}]')
-                [shutil.move(file_loc + "/" + file, unprocessed)  for file in discard_files[f]]
-                [cat_file_logger.info(f"Moving File {file} to  unprocessed")  for file in discard_files[f]]
+                try:
+                    [shutil.move(file_loc + "/" + file, unprocessed)  for file in discard_files[f]]
+                except:
+                    cat_file_logger.error("File Already exists in Destination")
+                else:
+                    cat_file_logger.info("Files moved")
+
 
     process_files['client_billing'] = [files for files in file_list if len(re.compile(r'Client [a-zA-Z\s]+_\d+.csv').findall(files))]
     cnt = len(process_files['client_billing'])
@@ -162,7 +167,7 @@ def concat_files(dict_list, file_loc, logfile_loc):
             dfc_file["Date_Added"] = processing_date
             df_final = pd.concat([df_final, dfc_file], ignore_index=True)
             df_final.fillna(0)
-            df_final = df_final.replace(re.compile(r'£'), "").replace(re.compile(r','), "").replace(re.compile(r'\('),"").replace(re.compile(r'\)'), "")
+            df_final = df_final.replace(re.compile(r'£'), "").replace(re.compile(r','), "").replace(re.compile(r'\('),"-").replace(re.compile(r'\)'), "")
 
             for cols in df_final.columns:
                 try:
