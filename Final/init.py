@@ -55,7 +55,7 @@ def main():
     from sqlalchemy import create_engine
     from datetime import datetime
 
-    file_loc = r"C:\Users\shash\Offline_Docs\Anza\DATA_Dump"
+    file_loc = r"D:\Learning+Offline\DATA_Dump"
     #file_loc = "/home/srv_admin/One_Drive/DATA_Dump"
     log_file = file_loc+"/"+"Logs"
     final_files = file_loc+"/"+"Final_Df"

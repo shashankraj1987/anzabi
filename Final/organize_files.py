@@ -65,7 +65,7 @@ def categorize_files(file_loc):
     unprocessed = file_loc + "/Unprocessed"
     processed = file_loc + "/Processed"
 
-    ess_fold_list = [log_loc,cat_file_logger,unprocessed,processed]
+    ess_fold_list = [log_loc,unprocessed,processed]
 
     for fold in ess_fold_list:
         if os.path.exists(fold):
@@ -94,7 +94,7 @@ def categorize_files(file_loc):
     # Move the above files to Unprocessed Folder before moving ahead
     for f in discard_files.keys():
                 cat_file_logger.info(f'Moving out files of list [{f}] to folder [{unprocessed}]')
-                # [shutil.move(file_loc + "/" + file, unprocessed)  for file in discard_files[f]]
+                [shutil.move(file_loc + "/" + file, unprocessed)  for file in discard_files[f]]
                 [cat_file_logger.info(f"Moving File {file} to  unprocessed")  for file in discard_files[f]]
 
     process_files['client_billing'] = [files for files in file_list if len(re.compile(r'Client [a-zA-Z\s]+_\d+.csv').findall(files))]
@@ -133,11 +133,11 @@ def categorize_files(file_loc):
         cat_file_logger.info(f'Moving category [{f}]')
         try:
             [shutil.move(file_loc + "/" + file, processed)  for file in process_files[f]]
-            [cat_file_logger.info(f' Moving files {file} to processed')  for file in process_files[f]]
+            #[cat_file_logger.info(f' Moving files {file} to processed')  for file in process_files[f]]
         except:
             cat_file_logger.info("Error Moving File {}".format(f))
         else:
-            #[cat_file_logger.info(f'Moving File --> {file}')  for file in process_files[f]]
+            [cat_file_logger.info(f'Moving File --> {file}')  for file in process_files[f]]
             pass
         
     return process_files
@@ -155,10 +155,7 @@ def concat_files(dict_list, file_loc, logfile_loc):
         concat_logger.info('*' * 50)
         concat_logger.info(f'Processing Category {file_cat}')
         for file in dict_list[file_cat]:
-            print("*"*50)
-            print("Went Inside For Loop ")
             dict_fname = file.split("_")[0]
-            print("Dict_fname assigned")
             dfc_file = pd.read_csv((file_loc + "/Processed/" + file), skiprows=get_rows(skip_rows, file))
             dfc_file = dfc_file[remove_cols(dfc_file)]
             processing_date = get_date_from_Filename(file)
@@ -177,7 +174,7 @@ def concat_files(dict_list, file_loc, logfile_loc):
                     # concat_logger.info(f'Converting {cols} to float')
                     df_final[cols] = df_final[cols].astype(float)
 
-        df_all_files[dict_fname] = df_final
+        df_all_files[dict_fname] = df_final.sort_values(by="Date_Added",ascending=False)
 
     for f in df_all_files.keys():
         rows = df_all_files[f].shape[0]
