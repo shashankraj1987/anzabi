@@ -179,7 +179,7 @@ def concat_files(dict_list, file_loc, logfile_loc):
                     # concat_logger.info(f'Converting {cols} to float')
                     df_final[cols] = df_final[cols].astype(float)
 
-        df_all_files[dict_fname] = df_final.sort_values(by="Date_Added",ascending=False)
+        df_all_files[dict_fname] = df_final.sort_values(by="Date_Added",ascending=True)
 
     for f in df_all_files.keys():
         rows = df_all_files[f].shape[0]

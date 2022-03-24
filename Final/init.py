@@ -49,7 +49,7 @@ def load_to_db():
 
 
 def main():
-    import organize_files as of
+    import notebooks.organize_files as of
     import pandas as pd
     import sys
     import os
