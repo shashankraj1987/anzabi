@@ -70,7 +70,7 @@ def main():
 
     db = 'AnzaBI'
     db_user = 'db_Admin'
-    db_password = 'password'
+    db_password = 'S3cu12e@123$'
     db_host = '219.91.145.98'
     db_port = '5432'
     try:
@@ -97,7 +97,7 @@ def main():
         all_files[file].to_parquet(backup+"/"+file+".parquet.gzip",compression = 'gzip')   # Create a Backup Paraquet FIle as well. 
         try: 
             print(f"Putting all data in Postgresql Server for  [{file}]")
-            all_files[file].to_sql(schema_ref[file],con=engine,if_exists='append',schema='Bowling_Data',index=None)   # Send the data to database
+            # all_files[file].to_sql(schema_ref[file],con=engine,if_exists='append',schema='public',index=None)   # Send the data to database
         except:
             print(f"***** Unable to write to Database for file [{file}]********* ")
         else:

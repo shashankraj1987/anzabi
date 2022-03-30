@@ -57,12 +57,18 @@ def categorize_files(file_loc):
     
     if os.name == 'posix':
             os.system('clear')
+            log_loc = file_loc + "/" + "Logs"
+            unprocessed = file_loc + "/Unprocessed"
+            processed = file_loc + "/Processed"
+            separator = "/"
     else:
         os.system('cls')
+        log_loc = file_loc + "\\" + "Logs"
+        unprocessed = file_loc + "\\Unprocessed"
+        processed = file_loc + "\\Processed"
+        separator = "\\"
 
-    log_loc = file_loc + "/" + "Logs"
-    unprocessed = file_loc + "/Unprocessed"
-    processed = file_loc + "/Processed"
+
     ess_fold_list = [log_loc,unprocessed,processed]
 
     cat_file_logger = lc.start_log(log_loc)
@@ -71,7 +77,7 @@ def categorize_files(file_loc):
         if os.path.exists(fold):
             cat_file_logger.info(f'\n[{fold}] already Exists in [{file_loc}]\n')
         else:
-            os.mkdir(file_loc+"/"+fold)
+            os.mkdir(file_loc+separator+fold)
             cat_file_logger.info(f'\nCreating Folder {fold} in {file_loc}\n')
 
     total_csv = len([f for f in os.listdir(file_loc) if f.endswith('.csv')])
@@ -95,7 +101,7 @@ def categorize_files(file_loc):
     for f in discard_files.keys():
                 cat_file_logger.info(f'Moving out files of list [{f}] to folder [{unprocessed}]')
                 try:
-                    [shutil.move(file_loc + "/" + file, unprocessed)  for file in discard_files[f]]
+                    [shutil.move(file_loc + separator + file, unprocessed)  for file in discard_files[f]]
                 except:
                     cat_file_logger.error("File Already exists in Destination")
                 else:
@@ -137,7 +143,7 @@ def categorize_files(file_loc):
     for f in process_files.keys():
         cat_file_logger.info(f'Moving category [{f}]')
         try:
-            [shutil.move(file_loc + "/" + file, processed)  for file in process_files[f]]
+            [shutil.move(file_loc + separator + file, processed)  for file in process_files[f]]
             #[cat_file_logger.info(f' Moving files {file} to processed')  for file in process_files[f]]
         except:
             cat_file_logger.info("Error Moving File {}".format(f))

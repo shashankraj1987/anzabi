@@ -48,6 +48,9 @@ create table fees_billed(
 	Date_Added date not null
 )
 
+-- Write the script to change above column names 
+
+
 create table mttr_src_ref(
 	srno SERIAL primary key,
 	Fee_Earner_Reference1 varchar(10) not null, 
@@ -96,7 +99,6 @@ create table pmt_rcv_analysis(
 	mattercode1 varchar(20) not null, 
 	client_name VARCHAR(200) not null,
 	matbranchref VARCHAR(10),
-	bankref varchar, 
 	postingdetailsdate DATE not null, 
 	paymentref varchar(10) not null,
 	departmentcode varchar(20) not null, 
