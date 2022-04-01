@@ -4,8 +4,7 @@ import shutil
 import re
 import pandas as pd
 from datetime import datetime
-import log_config as lc
-import numpy as np 
+import sys
 
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
@@ -52,46 +51,40 @@ def get_date_from_Filename(fname):
     file_date = pd.to_datetime(dt, format='%d%m%Y')
     return file_date
 
-def categorize_files(file_loc):
-    import sys
-    
+def categorize_files(file_loc,log_writer):
     if os.name == 'posix':
             os.system('clear')
-            log_loc = file_loc + "/" + "Logs"
             unprocessed = file_loc + "/Unprocessed"
             processed = file_loc + "/Processed"
             separator = "/"
     else:
         os.system('cls')
-        log_loc = file_loc + "\\" + "Logs"
         unprocessed = file_loc + "\\Unprocessed"
         processed = file_loc + "\\Processed"
         separator = "\\"
 
 
-    ess_fold_list = [log_loc,unprocessed,processed]
-
-    cat_file_logger = lc.start_log(log_loc)
+    ess_fold_list = [unprocessed,processed]
     
     for fold in ess_fold_list:
         if os.path.exists(fold):
-            cat_file_logger.info(f'\n[{fold}] already Exists in [{file_loc}]\n')
+            log_writer.info(f'\n[{fold}] already Exists in [{file_loc}]\n')
         else:
             os.mkdir(file_loc+separator+fold)
-            cat_file_logger.info(f'\nCreating Folder {fold} in {file_loc}\n')
+            log_writer.info(f'\nCreating Folder {fold} in {file_loc}\n')
 
     total_csv = len([f for f in os.listdir(file_loc) if f.endswith('.csv')])
     if total_csv > 0:
-        print(f"Found {total_csv} csv files")
+        log_writer.info(f"Found {total_csv} csv files")
     elif total_csv == 0:
-        print("No CSV Files Found. Exiting.")
+        log_writer.info("No CSV Files Found. Exiting.")
         sys.exit()
 
     process_files = {}
     discard_files = {}
     file_list = os.listdir(file_loc)
 
-    cat_file_logger.info(f"Any xls file and files having Pie in the names will not be Processed")
+    log_writer.info(f"Any xls file and files having Pie in the names will not be Processed")
 
     # Segregating the Files.
     discard_files['all_pie'] = [files for files in file_list if len(re.compile(r'[\sa-zA-Z\s]+Pie \w+_\d+.csv').findall(files))]
@@ -99,72 +92,72 @@ def categorize_files(file_loc):
 
     # Move the above files to Unprocessed Folder before moving ahead
     for f in discard_files.keys():
-                cat_file_logger.info(f'Moving out files of list [{f}] to folder [{unprocessed}]')
+                log_writer.info(f'Moving out files of list [{f}] to folder [{unprocessed}]')
                 try:
                     [shutil.move(file_loc + separator + file, unprocessed)  for file in discard_files[f]]
                 except:
-                    cat_file_logger.error("File Already exists in Destination")
+                    log_writer.info("File Already exists in Destination")
                 else:
-                    cat_file_logger.info("Files moved")
+                    log_writer.info("Files moved")
 
 
     process_files['client_billing'] = [files for files in file_list if len(re.compile(r'Client [a-zA-Z\s]+_\d+.csv').findall(files))]
     cnt = len(process_files['client_billing'])
-    cat_file_logger.info(f'Found [{cnt}] files of Client BIlling ')
+    log_writer.info(f'Found [{cnt}] files of Client BIlling ')
     
     process_files['fee_brkdn_dept_fe'] = [files for files in file_list if len(re.compile(r'Fee Breakdown [a-zA-Z\s]+_\d+.csv').findall(files))]
     cnt = len(process_files['fee_brkdn_dept_fe'])
-    cat_file_logger.info(f'Found [{cnt}] files of Fee Breakdown by Dept ')
+    log_writer.info(f'Found [{cnt}] files of Fee Breakdown by Dept ')
     
     process_files['fee_summ_dept_fe'] = [files for files in file_list if len(re.compile(r'Fee Summary [a-zA-Z\s]+_\d+.csv').findall(files))]
     cnt = len(process_files['fee_summ_dept_fe'])
-    cat_file_logger.info(f'Found [{cnt}] files of Fee Summary by Dept ')
+    log_writer.info(f'Found [{cnt}] files of Fee Summary by Dept ')
         
     process_files['fees_billed'] = [files for files in file_list if len(re.compile(r'Fees B[a-zA-Z\s]+_\d+.csv').findall(files))]
     cnt = len(process_files['fees_billed'])
-    cat_file_logger.info(f'Found [{cnt}] files of Fees BIlled ')
+    log_writer.info(f'Found [{cnt}] files of Fees BIlled ')
         
     process_files['matter_src'] = [files for files in file_list if len(re.compile(r'Matter Source [a-zA-Z\s()]+_\d+.csv').findall(files))]
     cnt = len(process_files['matter_src'])
-    cat_file_logger.info(f'Found [{cnt}] files of Matter Source Reference ')
+    log_writer.info(f'Found [{cnt}] files of Matter Source Reference ')
      
     process_files['matter_opened'] = [files for files in file_list if len(re.compile(r'Matters Open[\sa-zA-Z\s()]+_\d+.csv').findall(files))]
     cnt = len(process_files['matter_opened'])
-    cat_file_logger.info(f'Found [{cnt}] files of Matter Opened by FE ')
+    log_writer.info(f'Found [{cnt}] files of Matter Opened by FE ')
     
     process_files['payment_rcv'] = [files for files in file_list if len(re.compile(r'Payment [\sa-zA-Z\s()]+_\d+.csv').findall(files))]
     cnt = len(process_files['payment_rcv'])
-    cat_file_logger.info(f'Found [{cnt}] files of Payment Received ')
+    log_writer.info(f'Found [{cnt}] files of Payment Received ')
        
     process_files['tot_hrs_fe'] = [files for files in file_list if len(re.compile(r'([tT]otal[\sa-z-A-Z\s]*_\d+.csv)').findall(files))]
     cnt = len(process_files['tot_hrs_fe'])
-    cat_file_logger.info(f'Found [{cnt}] files of Total Hours by Fee Earner ')
+    log_writer.info(f'Found [{cnt}] files of Total Hours by Fee Earner ')
 
     for f in process_files.keys():
-        cat_file_logger.info(f'Moving category [{f}]')
+        log_writer.info(f'Moving category [{f}]')
         try:
             [shutil.move(file_loc + separator + file, processed)  for file in process_files[f]]
-            #[cat_file_logger.info(f' Moving files {file} to processed')  for file in process_files[f]]
+            #[log_writer.info(f' Moving files {file} to processed')  for file in process_files[f]]
         except:
-            cat_file_logger.info("Error Moving File {}".format(f))
+            log_writer.info("Error Moving File {}".format(f))
         else:
-            [cat_file_logger.info(f'Moving File --> {file}')  for file in process_files[f]]
+            [log_writer.info(f'Moving File --> {file}')  for file in process_files[f]]
             pass
         
     return process_files
 
 
-def concat_files(dict_list, file_loc, logfile_loc):
-    concat_logger = lc.start_log(logfile_loc)
+def concat_files(dict_list, file_loc, log_writer):
+    
     df_all_files = {}
     dict_fname= ""
      # If a Filename is not in this Dictionary, then it will not be Considered. 
     # date = (datetime.now()).strftime("%m-%d-%y")
-    concat_logger.info(f'Following Keys will be processed - [{dict_list.keys()}]')
+    log_writer.info(f'Following Keys will be processed - [{dict_list.keys()}]')
     for file_cat in dict_list.keys():
         df_final = pd.DataFrame()
-        concat_logger.info('*' * 50)
-        concat_logger.info(f'Processing Category {file_cat}')
+        log_writer.info('*' * 50)
+        log_writer.info(f'Processing Category {file_cat}')
         for file in dict_list[file_cat]:
             dict_fname = file.split("_")[0]
             dfc_file = pd.read_csv((file_loc + "/Processed/" + file), skiprows=get_rows(skip_rows, file))
@@ -180,15 +173,15 @@ def concat_files(dict_list, file_loc, logfile_loc):
                     df_final[cols].astype(float)
                 except:
                     continue
-                    # concat_logger.info(f'Skipping Column {cols}')
+                    # log_writer.info(f'Skipping Column {cols}')
                 else:
-                    # concat_logger.info(f'Converting {cols} to float')
+                    # log_writer.info(f'Converting {cols} to float')
                     df_final[cols] = df_final[cols].astype(float)
 
         df_all_files[dict_fname] = df_final.sort_values(by="Date_Added",ascending=True)
 
     for f in df_all_files.keys():
         rows = df_all_files[f].shape[0]
-        concat_logger.info(f'Will Add -> {rows} entries for [{f}] to the database')
+        log_writer.info(f'Will Add -> {rows} entries for [{f}] to the database')
 
     return df_all_files
