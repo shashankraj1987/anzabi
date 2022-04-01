@@ -1,2 +1,5 @@
-
+.db
 .vscode/settings.json
+__pycache__
+.idea
+.vscode

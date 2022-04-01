@@ -1,3 +1,0 @@
-main server login : 
-	user - srv_admin
-	pwd - password
