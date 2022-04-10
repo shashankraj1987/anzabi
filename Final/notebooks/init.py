@@ -196,8 +196,8 @@ def write_data_to_db(file_loc=None):
 
 # %%
 def main():
-    info_loc = "D:\Learning+Offline\db_creds.csv"
-    write_data_to_db(info_loc)   
+    # info_loc = "D:\Learning+Offline\db_creds.csv"
+    write_data_to_db()   
 
 # %%
 if __name__ == "main":
