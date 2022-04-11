@@ -9,7 +9,6 @@ class chk_srvr:
         self.db_pwd = ""
         self.db_host = ""
         self.db_port = ""
-        self.log_stream = log_config.start_log_to_stream()
 
     def chk_creds(self):
         try:
@@ -19,10 +18,8 @@ class chk_srvr:
             self.db_host = os.environ['db_host']
             self.db_port = os.environ['db_port']
         except:
-            self.log_stream.error("Environment Variables are not Loaded.")
             return -1
         else:
-            self.log_stream.debug("Environment Variables are Loaded")
             return self.db_name,self.db_user,self.db_pwd,self.db_host,self.db_port
         
     def chk_base_dirs(self):
@@ -39,4 +36,5 @@ class chk_srvr:
 
                 return self.base_loc,self.log_file, self.final_files,self.backup,self.trigger_file
             else:
-                print("Path Doesn't Exist")
+                FileNotFoundError
+                #print("Path Doesn't Exist")
