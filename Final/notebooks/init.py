@@ -178,10 +178,15 @@ def write_data_to_db(file_loc=None):
     final_files = local_all_info['final_files']
 
     for file in local_all_files.keys():
-        #init_logger.debug(f"Converting all Columns to Lowercase for [{file}]")
         local_all_files[file].columns = [cols.lower() for cols in local_all_files[file].columns]
+                
+        # Change the Column namrs for Fees Billed
+        # Make month to tnx_month and splitamount tp split_amount
+        if file == "Fees Billed.csv":
+            local_all_files[file].rename(columns = {'month':'tnx_month', 'splitamount':'split_amount'}, inplace = True)
+            init_logger.info("** Renaming Columns for Fees Billed.csv **")
 
-        fname = final_files+"/"+file+".csv"
+        #fname = final_files+"/"+file+".csv"
         init_logger.debug(f"Appending all data in Postgresql Server for [{file}]")
 
         try:            
