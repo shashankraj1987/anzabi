@@ -175,16 +175,21 @@ def write_data_to_db(file_loc=None):
     else:
         init_logger.info("Database Connection Established")
 
-    final_files = local_all_info['final_files']
+    #final_files = local_all_info['final_files']
 
     for file in local_all_files.keys():
         local_all_files[file].columns = [cols.lower() for cols in local_all_files[file].columns]
                 
         # Change the Column namrs for Fees Billed
         # Make month to tnx_month and splitamount tp split_amount
-        if file == "Fees Billed.csv":
+        if file == "Fees Billed":
+            init_logger.info("The Values of Months before change are ")
+            init_logger.info(local_all_files[file].columns)
             local_all_files[file].rename(columns = {'month':'tnx_month', 'splitamount':'split_amount'}, inplace = True)
             init_logger.info("** Renaming Columns for Fees Billed.csv **")
+            init_logger.info("The Values of Months after changes are ")
+            init_logger.info(local_all_files[file].columns)
+        #fname = final_files+"/"+file+".csv"
 
         #fname = final_files+"/"+file+".csv"
         init_logger.debug(f"Appending all data in Postgresql Server for [{file}]")
