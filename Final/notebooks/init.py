@@ -1,4 +1,3 @@
-# %%
 import pandas as pd
 #from datetime import datetime
 import sys
@@ -10,7 +9,6 @@ import check_server
 import log_config
 import organize_files as of
 
-# %%
 try:
     tmp_fold = os.environ['tmp']
 except:
@@ -19,13 +17,11 @@ else:
     log_vals = log_config.start_log(tmp_fold)
     init_logger = log_vals[0]
 
-# %%
 SCHEMA_REF = {
     "Client Billing Descending":"client_billing","Fee Breakdown by Dept and Fee Earner":"fee_brkdn_dept_fe","Fee Summary by Dept and Fee Earner":"fee_smry_dept_fe",
     "Fees Billed":"fees_billed","Matter Source of Business inc Matter Bills (Bill Date)":"mttr_src_ref","Total Hours by Fee Earner-With Billings All":"tot_hrs_by_fe",
     "Matters Opened by FE":"mtrs_by_fe","Payment Received Analysis":"pmt_rcv_analysis"}
 
-# %%
 def init_checks(info_file=None):
     all_details = {}
     info_dict = {}
@@ -100,7 +96,6 @@ def init_checks(info_file=None):
             init_logger.info("Environment Variables not set for DB Credentials.")
             return -1
 
-# %%
 def get_consolidated_data_dict(info_file=None):
     if os.name == 'posix':
         init_logger.info("Getting Details from the Environment Variables")
@@ -118,7 +113,6 @@ def get_consolidated_data_dict(info_file=None):
     all_files = of.concat_files(dict_list, all_info["file_loc"],init_logger)
     return all_files, all_info
 
-# %%
 def write_data_to_filesys(info_file_loc=None):
     ret_vals = get_consolidated_data_dict(info_file_loc)
     all_files_dict = ret_vals[0]
@@ -162,7 +156,6 @@ def write_data_to_filesys(info_file_loc=None):
             init_logger.info("*"*50)
     return all_files_dict,all_info_dict
 
-# %%
 def write_data_to_db(file_loc=None):
     info = write_data_to_filesys(file_loc)
     local_all_info = info[1]
@@ -180,7 +173,7 @@ def write_data_to_db(file_loc=None):
     for file in local_all_files.keys():
         local_all_files[file].columns = [cols.lower() for cols in local_all_files[file].columns]
                 
-        # Change the Column namrs for Fees Billed
+        # Change the Column names for Fees Billed
         # Make month to tnx_month and splitamount tp split_amount
         if file == "Fees Billed":
             init_logger.info("The Values of Months before change are ")
@@ -204,13 +197,9 @@ def write_data_to_db(file_loc=None):
     init_logger.info(f'Moving log files from [{log_vals[1]}] to [{local_all_info["log_file"]}]')
     shutil.copy(log_vals[1],local_all_info["log_file"])
 
-# %%
 def main():
     # info_loc = "D:\Learning+Offline\db_creds.csv"
     write_data_to_db()   
 
-# %%
 if __name__ == "main":
     main()
-
-
